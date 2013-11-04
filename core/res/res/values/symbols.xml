@@ -2322,6 +2322,7 @@
   <java-symbol type="integer" name="config_proximityCheckTimeout" />
 
   <java-symbol type="bool" name="config_samsung_stk" />
+  <java-symbol type="bool" name="config_hasRemovableLid" />
 
   <!-- Notification and battery light -->
   <java-symbol type="bool" name="config_intrusiveNotificationLed" />
