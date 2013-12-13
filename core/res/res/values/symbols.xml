@@ -2241,6 +2241,7 @@
   <java-symbol type="bool" name="config_reject_ggsn_perm_failure" />
   <java-symbol type="bool" name="config_protocol_errors_perm_failure" />
 
+<<<<<<< HEAD
   <java-symbol type="bool" name="config_fetch_apn_from_omh_card" />
   <!-- Configuration to play sms ringtone during MO/MT call -->
   <java-symbol type="bool" name="config_sms_ringtone_incall" />
@@ -2321,4 +2322,6 @@
 
   <!-- Array of default activities with custom power management -->
   <java-symbol type="array" name="config_auto_perf_activities" />
+
+  <java-symbol type="bool" name="config_enable_mms_with_mobile_data_off" />
 </resources>
