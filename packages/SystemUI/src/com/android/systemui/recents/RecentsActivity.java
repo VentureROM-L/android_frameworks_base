@@ -244,11 +244,13 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             mEmptyView.setVisibility(View.VISIBLE);
             mRecentsView.setSearchBarVisibility(View.GONE);
             //findViewById(R.id.clear_recents).setVisibility(View.GONE);
+            findViewById(R.id.floating_action_button).setVisibility(View.GONE);
         } else {
             if (mEmptyView != null) {
                 mEmptyView.setVisibility(View.GONE);
             }
             //findViewById(R.id.clear_recents).setVisibility(View.VISIBLE);
+            findViewById(R.id.floating_action_button).setVisibility(View.VISIBLE);
             if (mRecentsView.hasSearchBar()) {
                 mRecentsView.setSearchBarVisibility(View.VISIBLE);
             } else {
@@ -564,6 +566,8 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
         // Dismiss Recents to the focused Task or Home
         dismissRecentsToFocusedTaskOrHome(true);
+
+        mRecentsView.endFABanimation();
     }
 
     /** Called when debug mode is triggered */
@@ -593,27 +597,47 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
     }
 
+<<<<<<< HEAD
+=======
+    /** Called when the enter recents animation is triggered. */
+    public void onEnterAnimationTriggered() {
+        // Animate the SystemUI scrim views
+        mScrimViews.startEnterRecentsAnimation();
+        mRecentsView.startFABanimation();
+    }
+
+>>>>>>> 3d1ebd2... Squashed: Add in recents clear-all floating button
     /**** RecentsView.RecentsViewCallbacks Implementation ****/
 
     @Override
     public void onExitToHomeAnimationTriggered() {
         // Animate the SystemUI scrim views out
         mScrimViews.startExitRecentsAnimation();
+        mRecentsView.endFABanimation();
     }
 
     @Override
     public void onTaskViewClicked() {
+<<<<<<< HEAD
+=======
+        // Mark recents as no longer visible
+        AlternateRecentsComponent.notifyVisibilityChanged(false);
+        mVisible = false;
+        mRecentsView.endFABanimation();
+>>>>>>> 3d1ebd2... Squashed: Add in recents clear-all floating button
     }
 
     @Override
     public void onTaskLaunchFailed() {
         // Return to Home
         dismissRecentsToHomeRaw(true);
+        mRecentsView.endFABanimation();
     }
 
     @Override
     public void onAllTaskViewsDismissed() {
         mFinishLaunchHomeRunnable.run();
+        mRecentsView.endFABanimation();
     }
 
     @Override

@@ -16,6 +16,8 @@
 
 package com.android.systemui.recents.views;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityOptions;
 import android.app.TaskStackBuilder;
 import android.content.Context;
@@ -27,6 +29,8 @@ import android.net.Uri;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.view.ViewAnimationUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowInsets;
@@ -39,6 +43,8 @@ import com.android.systemui.recents.model.RecentsPackageMonitor;
 import com.android.systemui.recents.model.RecentsTaskLoader;
 import com.android.systemui.recents.model.Task;
 import com.android.systemui.recents.model.TaskStack;
+
+import com.android.systemui.R;
 
 import java.util.ArrayList;
 
@@ -66,6 +72,7 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
     View mSearchBar;
     RecentsViewCallbacks mCb;
     View mClearRecents;
+    View mFloatingButton;
 
     public RecentsView(Context context) {
         super(context);
@@ -158,6 +165,17 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
             if (child != mSearchBar) {
                 TaskStackView stackView = (TaskStackView) child;
                 //stackView.dismissAllTasks();
+            }
+        }
+    }
+
+    public void dismissAllTasksAnimated() {
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+            if (child != mSearchBar) {
+                TaskStackView stackView = (TaskStackView) child;
+                stackView.dismissAllTasks();
             }
         }
     }
@@ -301,6 +319,16 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         mConfig.getTaskStackBounds(width, height, mConfig.systemInsets.top,
                 mConfig.systemInsets.right, taskStackBounds);
 
+        if (mFloatingButton != null) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)
+                    mFloatingButton.getLayoutParams();
+            params.topMargin = taskStackBounds.top;
+            params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+            mFloatingButton.setLayoutParams(params);
+        } else {
+            mFloatingButton.setVisibility(View.GONE);
+        }
+
         // Measure each TaskStackView with the full width and height of the window since the 
         // transition view is a child of that stack view
         int childCount = getChildCount();
@@ -323,15 +351,38 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         }
     }
 
+    public void startFABanimation() {
+        // Animate the action button in
+        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
+        mFloatingButton.animate().alpha(1f)
+                .setStartDelay(mConfig.taskBarEnterAnimDelay)
+                .setDuration(mConfig.taskBarEnterAnimDuration)
+                .setInterpolator(mConfig.fastOutLinearInInterpolator)
+                .withLayer()
+                .start();
+    }
+
+    public void endFABanimation() {
+        // Animate the action button away
+        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
+        mFloatingButton.animate().alpha(0f)
+                .setStartDelay(0)
+                .setDuration(mConfig.taskBarExitAnimDuration)
+                .setInterpolator(mConfig.fastOutLinearInInterpolator)
+                .withLayer()
+                .start();
+    }
+
     @Override
     protected void onAttachedToWindow () {
         super.onAttachedToWindow();
-        //mClearRecents = ((View)getParent()).findViewById(R.id.clear_recents);
-        //mClearRecents.setOnClickListener(new View.OnClickListener() {
-        //    public void onClick(View v) {
-        //        dismissAllTasksAnimated();
-        ///    }
-       // });
+        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
+        mClearRecents = ((View)getParent()).findViewById(R.id.clear_recents);
+        mClearRecents.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dismissAllTasksAnimated();
+            }
+        });
     }
 
     /**
