@@ -123,10 +123,10 @@ public final class ShutdownThread extends Thread {
     private static AlertDialog sConfirmDialog;
 
     private static AudioManager mAudioManager;
-    
+
     private ShutdownThread() {
     }
- 
+
     /**
      * Request a clean shutdown, waiting for subsystems to clean up their
      * state etc.  Must be called from a Looper thread in which its UI
@@ -151,25 +151,13 @@ public final class ShutdownThread extends Thread {
             }
         }
 
-        boolean showRebootOption = false;
-        String[] defaultActions = context.getResources().getStringArray(
-                com.android.internal.R.array.config_globalActionsList);
-        for (int i = 0; i < defaultActions.length; i++) {
-            if (defaultActions[i].equals("reboot")) {
-                showRebootOption = true;
-                break;
-            }
-        }
         final int longPressBehavior = context.getResources().getInteger(
                         com.android.internal.R.integer.config_longPressOnPowerBehavior);
-        int resourceId = mRebootSafeMode
+        final int resourceId = mRebootSafeMode
                 ? com.android.internal.R.string.reboot_safemode_confirm
                 : (longPressBehavior == 2
                         ? com.android.internal.R.string.shutdown_confirm_question
                         : com.android.internal.R.string.shutdown_confirm);
-        if (showRebootOption && !mRebootSafeMode) {
-            resourceId = com.android.internal.R.string.reboot_confirm;
-        }
 
         final int titleResourceId = mRebootSafeMode
                  ? com.android.internal.R.string.reboot_safemode_title
@@ -450,14 +438,14 @@ public final class ShutdownThread extends Thread {
         }
 
         Log.i(TAG, "Sending shutdown broadcast...");
-        
+
         // First send the high-level shut down broadcast.
         mActionDone = false;
         Intent intent = new Intent(Intent.ACTION_SHUTDOWN);
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         mContext.sendOrderedBroadcastAsUser(intent,
                 UserHandle.ALL, null, br, mHandler, 0, null, null);
-        
+
         final long endTime = SystemClock.elapsedRealtime() + MAX_BROADCAST_TIME;
         synchronized (mActionDoneSync) {
             while (!mActionDone) {
@@ -472,9 +460,9 @@ public final class ShutdownThread extends Thread {
                 }
             }
         }
-        
+
         Log.i(TAG, "Shutting down activity manager...");
-        
+
         final IActivityManager am =
             ActivityManagerNative.asInterface(ServiceManager.checkService("activity"));
         if (am != null) {
