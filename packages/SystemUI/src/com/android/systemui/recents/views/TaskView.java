@@ -501,14 +501,6 @@ public class TaskView extends FrameLayout implements Task.TaskCallbacks,
         return mIsFullScreenView;
     }
 
-    /**
-     * Returns whether this view should be clipped, or any views below should clip against this
-     * view.
-     */
-    boolean shouldClipViewInStack() {
-        return mClipViewInStack && (getVisibility() == View.VISIBLE);
-    }
-
     /** Sets whether this view should be clipped, or clipped against. */
     void setClipViewInStack(boolean clip) {
         if (clip != mClipViewInStack) {
