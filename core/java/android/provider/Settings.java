@@ -1247,7 +1247,6 @@ public final class Settings {
             MOVED_TO_SECURE.add(Secure.INSTALL_NON_MARKET_APPS);
 
             /* CM12 CHANGES */
-            MOVED_TO_SECURE.add(Secure.STATS_COLLECTION);
             MOVED_TO_SECURE.add(Secure.VOLUME_LINK_NOTIFICATION);
             MOVED_TO_SECURE.add(Secure.QS_TILES);
             MOVED_TO_SECURE.add(Secure.QS_USE_MAIN_TILES);
@@ -3273,12 +3272,6 @@ public final class Settings {
          * @hide
          */
         public static final String EGG_MODE = "egg_mode";
-
-        /**
-         * Whether to wake the screen with the home key, the value is boolean.
-         * @hide
-         */
-        public static final String HOME_WAKE_SCREEN = "home_wake_screen";
 
         /**
          * Display style of the status bar battery information
