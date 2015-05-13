@@ -482,23 +482,14 @@ public class TaskView extends FrameLayout implements Task.TaskCallbacks,
                 }
             }
         }, delayed);
-        // Hide the footer
-        animateFooterVisibility(false, mConfig.taskViewRemoveAnimDuration);
     }
 
-    /** Sets whether this task view is full screen or not. */
-    void setIsFullScreen(boolean isFullscreen) {
-        mIsFullScreenView = isFullscreen;
-        mHeaderView.setIsFullscreen(isFullscreen);
-        if (isFullscreen) {
-            // If we are full screen, then disable the bottom outline clip for the footer
-            mViewBounds.setOutlineClipBottom(0);
-        }
-    }
-
-    /** Returns whether this task view should currently be drawn as a full screen view. */
-    boolean isFullScreenView() {
-        return mIsFullScreenView;
+    /**
+     * Returns whether this view should be clipped, or any views below should clip against this
+     * view.
+     */
+    boolean shouldClipViewInStack() {
+        return mClipViewInStack && (getVisibility() == View.VISIBLE);
     }
 
     /** Sets whether this view should be clipped, or clipped against. */
