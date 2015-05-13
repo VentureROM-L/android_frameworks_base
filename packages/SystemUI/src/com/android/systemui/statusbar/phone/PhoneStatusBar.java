@@ -44,11 +44,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.StatusBarManager;
 import android.app.WallpaperManager;
-<<<<<<< HEAD
-=======
-import android.content.ActivityNotFoundException;
 import android.content.ComponentCallbacks2;
->>>>>>> b9d1fd1... systemui: Fix the keyguard issues
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -4536,13 +4532,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 // long-pressed 'together'
                 if ((time - mLastLockToAppLongPress) < LOCK_TO_APP_GESTURE_TOLERENCE) {
                     activityManager.stopLockTaskModeOnCurrent();
-<<<<<<< HEAD
-                } else if ((v.getId() == R.id.back)
-=======
                     // When exiting refresh disabled flags.
                     mNavigationBarView.setDisabledFlags(mDisabled, true);
-                } else if ((NavbarEditor.NAVBAR_BACK.equals(v.getTag()))
->>>>>>> b9d1fd1... systemui: Fix the keyguard issues
+                } else if ((v.getId() == R.id.back)
                         && !mNavigationBarView.getRecentsButton().isPressed()) {
                     // If we aren't pressing recents right now then they presses
                     // won't be together, so send the standard long-press action.
