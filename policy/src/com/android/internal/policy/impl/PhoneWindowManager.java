@@ -462,9 +462,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     boolean mVolBtnMusicControls;
     boolean mIsLongPress;
 
-    // Volume wake control flag
-    boolean mVolumeWakeScreen;
-
     PointerLocationView mPointerLocationView;
 
     // The current size of the screen; really; extends into the overscan area of
@@ -1074,7 +1071,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // taken over the whole screen.
         boolean panic = mImmersiveModeConfirmation.onPowerKeyDown(interactive,
                 event.getDownTime(), isImmersiveMode(mLastSystemUiFlags));
-        if (panic && !WindowManagerPolicyControl.isImmersiveFiltersActive()) {
+        if (panic && !PolicyControl.isImmersiveFiltersActive()) {
             mHandler.post(mRequestTransientNav);
         }
 
